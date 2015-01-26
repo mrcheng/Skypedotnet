@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkypeDotnet", "SkypeDotnet\SkypeDotnet.csproj", "{22808731-B04A-410B-84F6-E61A94C76BA4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkypeDotnet.SampleApp", "SkypeDotnet.SampleApp\SkypeDotnet.SampleApp.csproj", "{834052C9-4E76-4794-87D1-00686CD22721}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{22808731-B04A-410B-84F6-E61A94C76BA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22808731-B04A-410B-84F6-E61A94C76BA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22808731-B04A-410B-84F6-E61A94C76BA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{834052C9-4E76-4794-87D1-00686CD22721}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{834052C9-4E76-4794-87D1-00686CD22721}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{834052C9-4E76-4794-87D1-00686CD22721}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{834052C9-4E76-4794-87D1-00686CD22721}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

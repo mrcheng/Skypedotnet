@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 
 namespace SkypeDotnet
 {
@@ -7,5 +8,7 @@ namespace SkypeDotnet
         public HttpStatusCode StatusCode { get; set; }
 
         public string ResponseData { get; set; }
+
+        public Uri ResponseUrl { get; set; }
     }
 }
