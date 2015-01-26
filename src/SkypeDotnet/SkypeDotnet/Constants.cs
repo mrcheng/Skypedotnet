@@ -23,5 +23,8 @@
         public const string SkypewebClientinfoName = "swx-skype.com";
         
         public const string SkypewebClientinfoVersion = "908/1.0.0.30";
+
+        
+        public const string SkypeWebLoginUrlFull = "https://" + SkypewebLoginHost + "/login";
     }
 }
