@@ -79,7 +79,7 @@ namespace SkypeDotnet
             postParameters.Add("username", credentials.UserName);
             postParameters.Add("password", credentials.Password);
 
-            var loginUrl = new Uri(Constants.SkypeWebLoginUrlFull + "?client_id=" + postParameters["client_id"] + "&redirect_uri=https%%3A%%2F%%2Fweb.skype.com");
+            var loginUrl = new Uri(Constants.SkypeWebLoginUrlFull + "?client_id=" + postParameters["client_id"] + "&redirect_uri=https://web.skype.com");
 
             response = httpClient.SendPost(loginUrl, postParameters);
 
