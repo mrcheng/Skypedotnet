@@ -30,7 +30,12 @@ namespace SkypeDotnet.SampleApp
             var newKey = Console.ReadKey(true);
             while (newKey.Key != ConsoleKey.Enter)
             {
+                if (newKey.Key == ConsoleKey.Backspace)
+                {
+                    str.Remove(str.Length - 1, 1);
+                }
                 str.Append(newKey.KeyChar);
+                
                 newKey = Console.ReadKey(true);
             }
             return str.ToString();
