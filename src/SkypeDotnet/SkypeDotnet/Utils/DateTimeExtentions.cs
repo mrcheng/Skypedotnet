@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SkypeDotnet
+namespace SkypeDotnet.Utils
 {
     public static class DateTimeExtentions
     {

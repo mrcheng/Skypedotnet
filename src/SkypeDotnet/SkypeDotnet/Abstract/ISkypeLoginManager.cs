@@ -1,4 +1,4 @@
-﻿namespace SkypeDotnet
+﻿namespace SkypeDotnet.Abstract
 {
     public interface ISkypeLoginManager
     {

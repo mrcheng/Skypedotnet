@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SkypeDotnet
+namespace SkypeDotnet.Abstract
 {
     public interface IHttpClient
     {

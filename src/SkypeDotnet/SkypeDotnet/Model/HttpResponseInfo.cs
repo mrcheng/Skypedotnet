@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace SkypeDotnet
+namespace SkypeDotnet.Model
 {
     public class HttpResponseInfo
     {
