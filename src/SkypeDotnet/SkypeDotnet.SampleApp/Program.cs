@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace SkypeDotnet.SampleApp
 {
@@ -14,9 +13,21 @@ namespace SkypeDotnet.SampleApp
             Console.Write("user: ");
             credentials.UserName = Console.ReadLine();
             Console.Write("pass: ");
-            credentials.Password = Console.ReadLine();
+            credentials.Password = SecureReadPassword();
 
             var client = SkypeClient.Login(credentials);
+        }
+
+        static string SecureReadPassword()
+        {
+            var str = new StringBuilder();
+            var newKey = Console.ReadKey(true);
+            while (newKey.Key != ConsoleKey.Enter)
+            {
+                str.Append(newKey.KeyChar);
+                newKey = Console.ReadKey(true);
+            }
+            return str.ToString();
         }
     }
 }
