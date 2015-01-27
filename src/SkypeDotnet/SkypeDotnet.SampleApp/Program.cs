@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 
 namespace SkypeDotnet.SampleApp
@@ -15,7 +16,12 @@ namespace SkypeDotnet.SampleApp
             Console.Write("pass: ");
             credentials.Password = SecureReadPassword();
 
-            var client = SkypeClient.Login(credentials);
+            var httpClient = new HttpClient();
+            var token = new SkypeLoginManager(httpClient).Login(credentials);
+
+            Console.WriteLine(token);
+
+            var client = new SkypeClient(httpClient, token);
         }
 
         static string SecureReadPassword()

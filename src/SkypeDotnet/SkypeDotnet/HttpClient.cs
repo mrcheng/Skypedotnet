@@ -7,7 +7,7 @@ using System.Web;
 
 namespace SkypeDotnet
 {
-    public class HttpClient
+    public class HttpClient : IHttpClient
     {
         private readonly CookieContainer sessionCookieContainer;
 
