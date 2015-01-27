@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using HtmlAgilityPack;
 
+using SkypeDotnet.Abstract;
+
 namespace SkypeDotnet
 {
     public class SkypeClient : ISkypeClient

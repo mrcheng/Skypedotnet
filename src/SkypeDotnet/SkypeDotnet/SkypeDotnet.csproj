@@ -33,6 +33,9 @@
     <Reference Include="HtmlAgilityPack">
       <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -43,16 +46,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\IHttpClient.cs" />
+    <Compile Include="Abstract\ISkypeLoginManager.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="DateTimeExtentions.cs" />
     <Compile Include="HttpClient.cs" />
-    <Compile Include="HttpResponseInfo.cs" />
-    <Compile Include="IHttpClient.cs" />
-    <Compile Include="ISkypeLoginManager.cs" />
+    <Compile Include="Model\HttpResponseInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LoginCredentials.cs" />
+    <Compile Include="SkypeAuthParams.cs" />
     <Compile Include="SkypeClient.cs" />
     <Compile Include="SkypeLoginManager.cs" />
+    <Compile Include="Utils\DateTimeExtentions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

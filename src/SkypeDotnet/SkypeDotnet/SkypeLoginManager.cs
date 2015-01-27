@@ -5,6 +5,9 @@ using System.Web.UI.WebControls;
 
 using HtmlAgilityPack;
 
+using SkypeDotnet.Abstract;
+using SkypeDotnet.Utils;
+
 namespace SkypeDotnet
 {
     public class SkypeLoginManager : ISkypeLoginManager

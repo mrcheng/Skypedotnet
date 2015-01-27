@@ -5,6 +5,11 @@ using System.Net;
 using System.Text;
 using System.Web;
 
+using Newtonsoft.Json.Linq;
+
+using SkypeDotnet.Abstract;
+using SkypeDotnet.Model;
+
 namespace SkypeDotnet
 {
     public class HttpClient : IHttpClient
@@ -16,30 +21,37 @@ namespace SkypeDotnet
             sessionCookieContainer = new CookieContainer();
         }
 
-        public HttpResponseInfo SendGet(Uri url)
+        public HttpResponseInfo SendGet(Uri url, Dictionary<string, string> customHeaders = null)
         {
-            var request = InitRequest(url);
+            var request = InitRequest(url, customHeaders);
             return InitResponse((HttpWebResponse)request.GetResponse());
         }
 
-        public HttpResponseInfo SendPost(Uri url, Dictionary<string, string> postParameters)
+        public HttpResponseInfo SendPost(Uri url, Dictionary<string, string> postParameters, Dictionary<string, string> customHeaders = null )
         {
-
-            var request = InitRequest(url);
-            request.Method = "POST";
-            request.ContentType = "application/x-www-form-urlencoded";
-
-            var responseData = InitPostParameters(postParameters);
-            request.ContentLength = responseData.Length;
-
-            Stream requestStream = request.GetRequestStream();
-            requestStream.Write(responseData, 0, responseData.Length);
-            requestStream.Close();
-
-            return InitResponse((HttpWebResponse) request.GetResponse());
+            return SendPost(url, InitPostParameters(postParameters), "application/x-www-form-urlencoded", customHeaders);
         }
 
-        private byte[] InitPostParameters(Dictionary<string, string> postParameters)
+        public HttpResponseInfo SendPost(Uri url, JObject json, Dictionary<string, string> customHeaders = null )
+        {
+            return SendPost(url, json.ToString(), "application/json", customHeaders);
+        }
+
+        public HttpResponseInfo SendPost(Uri url, string postData, string contentTypeHeader, Dictionary<string, string> customHeaders = null )
+        {
+            var request = InitRequest(url, customHeaders);
+            request.Method = "POST";
+            request.ContentType = contentTypeHeader;
+            var postBytes = Encoding.Default.GetBytes(postData);
+            request.ContentLength = postBytes.Length;
+            var stream = request.GetRequestStream();
+            stream.Write(postBytes, 0, postBytes.Length);
+            stream.Close();
+            return InitResponse((HttpWebResponse)request.GetResponse());
+
+        }
+
+        private string InitPostParameters(Dictionary<string, string> postParameters)
         {
             string postData = "";
 
@@ -50,7 +62,7 @@ namespace SkypeDotnet
             }
 
 
-            return Encoding.ASCII.GetBytes(postData);
+            return postData;
         }
 
         private HttpResponseInfo InitResponse(HttpWebResponse response)
@@ -74,11 +86,18 @@ namespace SkypeDotnet
             };
         }
 
-        private HttpWebRequest InitRequest(Uri url)
+        private HttpWebRequest InitRequest(Uri url, Dictionary<string, string> customHeaders = null)
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
+            
             request.CookieContainer = sessionCookieContainer;
             request.AllowAutoRedirect = false;
+            if(customHeaders == null) 
+                return request;
+            foreach (var customHeader in customHeaders)
+            {
+                request.Headers.Add(customHeader.Key, customHeader.Value);
+            }
             return request;
         }
     }

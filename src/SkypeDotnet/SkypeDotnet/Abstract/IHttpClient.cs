@@ -1,12 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Newtonsoft.Json.Linq;
+
+using SkypeDotnet.Model;
+
 namespace SkypeDotnet.Abstract
 {
     public interface IHttpClient
     {
-        HttpResponseInfo SendGet(Uri url);
+        HttpResponseInfo SendGet(Uri url, Dictionary<string, string> customHeaders = null);
 
-        HttpResponseInfo SendPost(Uri url, Dictionary<string, string> postParameters);
+        HttpResponseInfo SendPost(Uri url, Dictionary<string, string> postParameters, Dictionary<string, string> customHeaders = null );
+
+        HttpResponseInfo SendPost(Uri url, JObject json, Dictionary<string, string> customHeaders = null );
     }
 }
