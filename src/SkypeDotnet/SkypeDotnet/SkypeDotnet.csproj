@@ -56,6 +56,7 @@
     <Compile Include="LoginCredentials.cs" />
     <Compile Include="SkypeAuthParams.cs" />
     <Compile Include="SkypeClient.cs" />
+    <Compile Include="SkypeHmacChipher.cs" />
     <Compile Include="SkypeLoginManager.cs" />
     <Compile Include="Utils\DateTimeExtentions.cs" />
   </ItemGroup>

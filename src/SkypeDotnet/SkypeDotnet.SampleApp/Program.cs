@@ -20,7 +20,7 @@ namespace SkypeDotnet.SampleApp
             credentials.Password = SecureReadPassword();
 
             var httpClient = new HttpClient();
-            var token = new SkypeLoginManager(httpClient).Login(credentials);
+            var token = new SkypeLoginManager(httpClient, new SkypeHmacChipher()).Login(credentials);
 
             Console.WriteLine(token);
 

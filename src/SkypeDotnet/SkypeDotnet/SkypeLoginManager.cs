@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Security.Cryptography.X509Certificates;
 using System.Web.Management;
 using System.Web.UI.WebControls;
 
 using HtmlAgilityPack;
-
+using Newtonsoft.Json.Linq;
 using SkypeDotnet.Abstract;
 using SkypeDotnet.Utils;
 
@@ -14,10 +15,12 @@ namespace SkypeDotnet
     public class SkypeLoginManager : ISkypeLoginManager
     {
         private readonly IHttpClient httpClient;
+        private readonly ISkypeHmacChipher chipher;
 
-        public SkypeLoginManager(IHttpClient httpClient)
+        public SkypeLoginManager(IHttpClient httpClient, ISkypeHmacChipher chipher)
         {
             this.httpClient = httpClient;
+            this.chipher = chipher;
         }
 
         public SkypeAuthParams Login(LoginCredentials credentials)
@@ -38,20 +41,42 @@ namespace SkypeDotnet
 
             var customHeaders = new Dictionary<string, string>();
             
-            //todo get lockandkey!
-            customHeaders["LockAndKey"] = GetLockAndKey();
+            //customHeaders["LockAndKey"] = GetLockAndKey();
 
-            //todo get registration tocken!
-            
+            customHeaders["ClientInfo"] = GetClientInfo();
+
+            customHeaders["Authentication"] = "skypetoken=" + authParams.Token;
+
+            response =
+                httpClient.SendPost(new Uri("https://" + Constants.SkypewebMessagesHost + "/v1/users/ME/endpoints"),
+                    new JObject(), customHeaders);
+
             throw new NotImplementedException();
 
         }
 
+        private string GetClientInfo()
+        {
+            //"ClientInfo: os=Windows; osVer=8.1; proc=Win32; lcid=en-us; deviceType=1; country=n/a; clientName=" SKYPEWEB_CLIENTINFO_NAME "; clientVer=" SKYPEWEB_CLIENTINFO_VERSION "\r\n"
+            var resultString =
+                "ClientInfo: os=Windows; osVer=8.1; proc=Win32; lcid=en-us; deviceType=1; country=n/a; clientName={0}; clientVer={1}";
+
+            return string.Format(resultString, Constants.SkypewebClientinfoName, Constants.SkypewebClientinfoVersion);
+        }
+
         private string GetLockAndKey()
         {
+
+            var currentTime = ((int) DateTime.Now.ToUnixTimestapm()).ToString();
+            var hash = chipher.Encrypt(currentTime, Constants.SkypewebLockandkeyAppid,
+                Constants.SkypewebLockandkeySecret);
+
             //appId=" SKYPEWEB_LOCKANDKEY_APPID "; time=%s; lockAndKeyResponse=%s\r\n"
             var resultString = "appId={0}; time={1}; lockAndKeyResponse={2}";
-            return string.Format(resultString, Constants.SkypewebLockandkeyAppid, (int)DateTime.Now.ToUnixTimestapm(), string.Empty);
+
+
+
+            return string.Format(resultString, Constants.SkypewebLockandkeyAppid, currentTime, hash);
         }
 
         private string GetToken(string responseData)
