@@ -41,7 +41,7 @@ namespace SkypeDotnet
 
             var customHeaders = new Dictionary<string, string>();
             
-            //customHeaders["LockAndKey"] = GetLockAndKey();
+            customHeaders["LockAndKey"] = GetLockAndKey();
 
             customHeaders["ClientInfo"] = GetClientInfo();
 
@@ -59,7 +59,7 @@ namespace SkypeDotnet
         {
             //"ClientInfo: os=Windows; osVer=8.1; proc=Win32; lcid=en-us; deviceType=1; country=n/a; clientName=" SKYPEWEB_CLIENTINFO_NAME "; clientVer=" SKYPEWEB_CLIENTINFO_VERSION "\r\n"
             var resultString =
-                "ClientInfo: os=Windows; osVer=8.1; proc=Win32; lcid=en-us; deviceType=1; country=n/a; clientName={0}; clientVer={1}";
+                "os=Windows; osVer=8.1; proc=Win32; lcid=en-us; deviceType=1; country=n/a; clientName={0}; clientVer={1}";
 
             return string.Format(resultString, Constants.SkypewebClientinfoName, Constants.SkypewebClientinfoVersion);
         }
