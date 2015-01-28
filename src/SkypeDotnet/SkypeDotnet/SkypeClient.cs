@@ -12,10 +12,10 @@ namespace SkypeDotnet
         private readonly IHttpClient httpClient;
         private readonly string requestToken;
 
-        public SkypeClient(IHttpClient httpClient, string requestToken)
+        public SkypeClient(IHttpClient httpClient, SkypeAuthParams requestToken)
         {
             this.httpClient = httpClient;
-            this.requestToken = requestToken;
+            this.requestToken = requestToken.Token;
         }
 
         public SkypeProfile GetSelfProfile()

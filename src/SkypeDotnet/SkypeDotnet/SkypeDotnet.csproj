@@ -50,6 +50,7 @@
     <Compile Include="Abstract\ISkypeLoginManager.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="HttpClient.cs" />
+    <Compile Include="ISkypeHmacChipher.cs" />
     <Compile Include="Model\HttpResponseInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LoginCredentials.cs" />

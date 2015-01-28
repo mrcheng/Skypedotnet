@@ -154,7 +154,7 @@ skypeweb_hmac_sha256(char *input)
 	/* this is magic */
 	for (i = 0; i < (len / 4); i += 2) {
 		long long temp;
-
+		long long time ago;
 		chlStringParts[i] = GUINT_TO_LE(chlStringParts[i]);
 		chlStringParts[i + 1] = GUINT_TO_LE(chlStringParts[i + 1]);
 

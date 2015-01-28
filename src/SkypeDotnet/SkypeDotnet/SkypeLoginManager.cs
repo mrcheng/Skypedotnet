@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using System.Web.Management;
 using System.Web.UI.WebControls;
 
 using HtmlAgilityPack;
@@ -19,7 +20,7 @@ namespace SkypeDotnet
             this.httpClient = httpClient;
         }
 
-        public string Login(LoginCredentials credentials)
+        public SkypeAuthParams Login(LoginCredentials credentials)
         {
             var response = httpClient.SendGet(new Uri(Constants.SkypeWebLoginUrlFull));
 
@@ -32,9 +33,25 @@ namespace SkypeDotnet
 
             response = httpClient.SendPost(loginUrl, postParameters);
 
-            var token = GetToken(response.ResponseData);
+            var authParams = new SkypeAuthParams();
+            authParams.Token = GetToken(response.ResponseData);
 
-            return token;
+            var customHeaders = new Dictionary<string, string>();
+            
+            //todo get lockandkey!
+            customHeaders["LockAndKey"] = GetLockAndKey();
+
+            //todo get registration tocken!
+            
+            throw new NotImplementedException();
+
+        }
+
+        private string GetLockAndKey()
+        {
+            //appId=" SKYPEWEB_LOCKANDKEY_APPID "; time=%s; lockAndKeyResponse=%s\r\n"
+            var resultString = "appId={0}; time={1}; lockAndKeyResponse={2}";
+            return string.Format(resultString, Constants.SkypewebLockandkeyAppid, (int)DateTime.Now.ToUnixTimestapm(), string.Empty);
         }
 
         private string GetToken(string responseData)
@@ -73,7 +90,7 @@ namespace SkypeDotnet
 
         private static string GetJsTime()
         {
-            return DateTime.Now.ToUnixTimestapm().ToString("F2");
+            return DateTime.Now.ToUniversalTime().ToUnixTimestapm().ToString("F2");
         }
 
         private static string GetTimezone()
