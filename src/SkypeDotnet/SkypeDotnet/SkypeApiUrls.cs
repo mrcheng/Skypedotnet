@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 
 namespace SkypeDotnet
 {
@@ -14,6 +15,10 @@ namespace SkypeDotnet
         public const string SearchPath = "/search/users/any";
 
         public const string AuthRequestsPath = "/users/self/contacts/auth-request";
+
+        public const string FriendProfilesPath = "/users/self/contacts/profiles";
+
+        public const string FriendListPath = "/users/self/contacts";
 
         public const string ContactsHost = "api.skype.com";
 
@@ -43,6 +48,10 @@ namespace SkypeDotnet
         public static readonly Uri AuthRequestsUrl = UrlForContactsHost(AuthRequestsPath);
 
         public static readonly Uri DisplayNameUrl = UrlForContactsHost(DisplayNamePath);
+
+        public static readonly Uri FriendsListUrl = UrlForContactsHost(FriendListPath);
+
+        public static readonly Uri FriendProfilesUrl = UrlForContactsHost(FriendProfilesPath);
 
         public static Uri SearchContactsUrlWithQuery(string keyword)
         {

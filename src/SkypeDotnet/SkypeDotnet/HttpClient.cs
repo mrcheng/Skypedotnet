@@ -18,6 +18,8 @@ namespace SkypeDotnet
     {
         private readonly CookieContainer sessionCookieContainer;
 
+        private readonly IDictionary<string, string> sharedCustomHeaders = new Dictionary<string, string>();
+
         public HttpClient()
         {
             sessionCookieContainer = new CookieContainer();
@@ -26,7 +28,7 @@ namespace SkypeDotnet
         public HttpResponseInfo SendGet(Uri url, Dictionary<string, string> customHeaders = null)
         {
             var request = InitRequest(url, customHeaders);
-            return InitResponse((HttpWebResponse)request.GetResponse(), null, null, customHeaders:customHeaders);
+            return InitResponse((HttpWebResponse)request.GetResponse(), null, null, customHeaders);
         }
 
         public HttpResponseInfo SendPost(Uri url, Dictionary<string, string> postParameters, Dictionary<string, string> customHeaders = null )
@@ -45,6 +47,11 @@ namespace SkypeDotnet
             SetupPostRequest(request, postData, contentTypeHeader);
             return InitResponse((HttpWebResponse)request.GetResponse(), postData, contentTypeHeader, customHeaders);
 
+        }
+
+        public void UpdateSharedCustomHeader(string key, string value)
+        {
+            sharedCustomHeaders[key] = value;
         }
 
         private string InitPostParameters(Dictionary<string, string> postParameters)
@@ -105,9 +112,13 @@ namespace SkypeDotnet
             
             request.CookieContainer = sessionCookieContainer;
             request.AllowAutoRedirect = false;
-            if(customHeaders == null) 
-                return request;
-            foreach (var customHeader in customHeaders)
+
+            if(customHeaders != null) 
+                foreach (var customHeader in customHeaders)
+                {
+                    request.Headers.Add(customHeader.Key, customHeader.Value);
+                }
+            foreach (var customHeader in sharedCustomHeaders)
             {
                 request.Headers.Add(customHeader.Key, customHeader.Value);
             }

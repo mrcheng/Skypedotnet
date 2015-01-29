@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using HtmlAgilityPack;
 
+using Newtonsoft.Json;
+
 using SkypeDotnet.Abstract;
+using SkypeDotnet.Model;
 
 namespace SkypeDotnet
 {
@@ -12,25 +15,18 @@ namespace SkypeDotnet
         private readonly IHttpClient httpClient;
         private readonly string requestToken;
 
-        public SkypeClient(IHttpClient httpClient, SkypeAuthParams requestToken)
+        public SkypeClient(IHttpClient httpClient, SkypeAuthParams authParams)
         {
             this.httpClient = httpClient;
-            this.requestToken = requestToken.Token;
+            httpClient.UpdateSharedCustomHeader("X-Skypetoken", authParams.Token);
+            this.requestToken = authParams.Token;
         }
 
-        public SkypeProfile GetSelfProfile()
+        public SkypeSelfProfile GetSelfProfile()
         {
-            throw new NotImplementedException();
+            var response = httpClient.SendGet(SkypeApiUrls.DisplayNameUrl);
+
+            return JsonConvert.DeserializeObject<SkypeSelfProfile>(response.ResponseData);
         }
-    }
-
-    public interface ISkypeClient
-    {
-        SkypeProfile GetSelfProfile();
-    }
-
-    public class SkypeProfile
-    {
-        
     }
 }
