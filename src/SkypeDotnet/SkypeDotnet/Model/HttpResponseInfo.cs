@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 
 namespace SkypeDotnet.Model
@@ -10,5 +11,7 @@ namespace SkypeDotnet.Model
         public string ResponseData { get; set; }
 
         public Uri ResponseUrl { get; set; }
+
+        public IDictionary<string, string> ResponseHeaders { get; set; }
     }
 }

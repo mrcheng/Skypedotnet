@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Web;
@@ -9,6 +10,7 @@ using Newtonsoft.Json.Linq;
 
 using SkypeDotnet.Abstract;
 using SkypeDotnet.Model;
+using SkypeDotnet.Utils;
 
 namespace SkypeDotnet
 {
@@ -78,11 +80,13 @@ namespace SkypeDotnet
             var reader = new StreamReader(response.GetResponseStream());
             var result = reader.ReadToEnd();
             reader.Dispose();
+
             return new HttpResponseInfo()
             {
                 ResponseData = result,
                 StatusCode = response.StatusCode,
-                ResponseUrl = response.ResponseUri
+                ResponseUrl = response.ResponseUri,
+                ResponseHeaders = response.Headers.GetHeaders()
             };
         }
 
