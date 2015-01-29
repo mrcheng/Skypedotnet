@@ -85,7 +85,7 @@ namespace SkypeDotnet
             var result = new byte[newHash.Length * sizeof(uint)];
 
             Buffer.BlockCopy(newHash, 0, result, 0, result.Length);
-            return BitConverter.ToString(result).Replace("-", "");
+            return BitConverter.ToString(result).Replace("-", "").ToLower();
         }
     }
 }

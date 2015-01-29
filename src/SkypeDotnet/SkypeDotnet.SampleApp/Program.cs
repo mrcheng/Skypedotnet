@@ -10,9 +10,6 @@ namespace SkypeDotnet.SampleApp
     {
         static void Main(string[] args)
         {
-
-
-            new SkypeHmacChipher().Encrypt("hello", Constants.SkypewebLockandkeyAppid, Constants.SkypewebLockandkeySecret);
             var credentials = new LoginCredentials();
             Console.Write("user: ");
             credentials.UserName = Console.ReadLine();
