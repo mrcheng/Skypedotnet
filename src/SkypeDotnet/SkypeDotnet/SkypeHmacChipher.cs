@@ -3,15 +3,14 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
+using SkypeDotnet.Abstract;
+
 namespace SkypeDotnet
 {
     public class SkypeHmacChipher : ISkypeHmacChipher
     {
         public string Encrypt(string input, string lockAndKeyApp, string lockAndKeySecret )
         {
-            //todo SHA256 encryption using lockAndKey appId and app secret. 
-            //todo see skypeweb_hmac_sha256 function at ./skypeweb_src/skypeweb_util.c
-
             var sha = SHA256.Create();
 
             var encoding = Encoding.Default;
