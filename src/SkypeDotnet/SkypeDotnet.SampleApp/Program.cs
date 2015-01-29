@@ -4,6 +4,8 @@ using System.Linq;
 using System.Net;
 using System.Text;
 
+using Newtonsoft.Json;
+
 namespace SkypeDotnet.SampleApp
 {
     class Program
@@ -21,13 +23,11 @@ namespace SkypeDotnet.SampleApp
 
             var client = new SkypeClient(httpClient, token);
 
-            var user = client.GetSelfProfile();
+            var searchResults = client.SearchContacts("hello");
 
-            var response = httpClient.SendGet(SkypeApiUrls.DisplayNameUrl);
+            var response = httpClient.SendGet(SkypeApiUrls.AuthRequestsUrl);
 
-            response = httpClient.SendGet(SkypeApiUrls.AuthRequestsUrl);
-
-            response = httpClient.SendGet(SkypeApiUrls.SearchContactsUrlWithQuery("querty"));
+            //response = httpClient.SendGet(SkypeApiUrls.SearchContactsUrlWithQuery("querty"));
 
             response = httpClient.SendGet(SkypeApiUrls.FriendsListUrl);
 

@@ -24,9 +24,19 @@ namespace SkypeDotnet
 
         public SkypeSelfProfile GetSelfProfile()
         {
-            var response = httpClient.SendGet(SkypeApiUrls.DisplayNameUrl);
+            return SendAndDeserialize<SkypeSelfProfile>(SkypeApiUrls.DisplayNameUrl);
+        }
 
-            return JsonConvert.DeserializeObject<SkypeSelfProfile>(response.ResponseData);
+        public IEnumerable<SearchInfo> SearchContacts(string query)
+        {
+            return SendAndDeserialize<IEnumerable<SearchInfo>>(SkypeApiUrls.SearchContactsUrlWithQuery(query));
+        }
+
+        private T SendAndDeserialize<T>(Uri url)
+        {
+            var response = httpClient.SendGet(url);
+
+            return JsonConvert.DeserializeObject<T>(response.ResponseData);
         }
     }
 }

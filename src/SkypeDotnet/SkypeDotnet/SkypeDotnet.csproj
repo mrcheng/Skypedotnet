@@ -50,6 +50,7 @@
     <Compile Include="Abstract\ISkypeClient.cs" />
     <Compile Include="Abstract\ISkypeHmacChipher.cs" />
     <Compile Include="Abstract\ISkypeLoginManager.cs" />
+    <Compile Include="Model\SearchInfo.cs" />
     <Compile Include="Model\SkypeProfileBase.cs" />
     <Compile Include="Model\SkypeSelfProfile.cs" />
     <Compile Include="SkypeApiUrls.cs" />
