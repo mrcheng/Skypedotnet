@@ -1,6 +1,6 @@
 ﻿namespace SkypeDotnet.Model
 {
-    public class SkypeSelfProfile
+    public class SkypeSelfProfile : SkypeProfileBase
     {
         public string UserName { get; set; }
 

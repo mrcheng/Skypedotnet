@@ -27,7 +27,9 @@ namespace SkypeDotnet.SampleApp
 
             var response = httpClient.SendGet(SkypeApiUrls.AuthRequestsUrl);
 
-            //response = httpClient.SendGet(SkypeApiUrls.SearchContactsUrlWithQuery("querty"));
+            var jsn =
+                JsonConvert.DeserializeObject(
+                    httpClient.SendGet(SkypeApiUrls.SearchContactsUrlWithQuery("querty")).ResponseData);
 
             response = httpClient.SendGet(SkypeApiUrls.FriendsListUrl);
 
