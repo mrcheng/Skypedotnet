@@ -13,9 +13,7 @@ namespace SkypeDotnet
         
         public const string SkypewebLockandkeyAppid = "msmsgs@msnmsgr.com";
         
-        public const string SkypewebLockandkeySecret = "Q1P7W2E4J9R8U3S5";
-        
-
+        public const string SkypewebLockandkeySecret = "Q1P7W2E4J9R8U3S5";       
         
         public const string SkypewebClientinfoName = "swx-skype.com";
         
