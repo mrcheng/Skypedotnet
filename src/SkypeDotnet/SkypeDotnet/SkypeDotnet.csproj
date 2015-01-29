@@ -48,7 +48,8 @@
   <ItemGroup>
     <Compile Include="Abstract\IHttpClient.cs" />
     <Compile Include="Abstract\ISkypeLoginManager.cs" />
-    <Compile Include="Constants.cs" />
+    <Compile Include="SkypeApiUrls.cs" />
+    <Compile Include="SkypeConstants.cs" />
     <Compile Include="HttpClient.cs" />
     <Compile Include="ISkypeHmacChipher.cs" />
     <Compile Include="Model\HttpResponseInfo.cs" />

@@ -18,8 +18,14 @@ namespace SkypeDotnet.SampleApp
 
             var httpClient = new HttpClient();
             var token = new SkypeLoginManager(httpClient, new SkypeHmacChipher()).Login(credentials);
+            
+            var customHeaders = new Dictionary<string, string> { {"X-Skypetoken", token.Token} };
 
-            Console.WriteLine(token);
+            var response = httpClient.SendGet(SkypeApiUrls.DisplayNameUrl, customHeaders);
+
+            response = httpClient.SendGet(SkypeApiUrls.AuthRequestsUrl, customHeaders);
+
+            response = httpClient.SendGet(SkypeApiUrls.SearchContactsUrlWithQuery("querty"), customHeaders);
 
             var client = new SkypeClient(httpClient, token);
         }

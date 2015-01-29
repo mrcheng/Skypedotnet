@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Web.Management;
-using System.Web.UI.WebControls;
 
 using HtmlAgilityPack;
 using Newtonsoft.Json.Linq;
@@ -26,19 +22,18 @@ namespace SkypeDotnet
 
         public SkypeAuthParams Login(LoginCredentials credentials)
         {
-            var response = httpClient.SendGet(new Uri(Constants.SkypeWebLoginUrlFull));
+            var response = httpClient.SendGet(SkypeApiUrls.WebLoginUrl);
 
             var postParameters = GetPostParameters(response.ResponseData);
 
             postParameters.Add("username", credentials.UserName);
             postParameters.Add("password", credentials.Password);
 
-            var loginUrl = new Uri(Constants.SkypeWebLoginUrlFull + "?client_id=" + postParameters["client_id"] + "&redirect_uri=https://web.skype.com");
+            var loginUrl = SkypeApiUrls.WebLoginUrlWithQuery(postParameters["client_id"]);
 
             response = httpClient.SendPost(loginUrl, postParameters);
 
-            var authParams = new SkypeAuthParams();
-            authParams.Token = GetToken(response.ResponseData);
+            var authParams = new SkypeAuthParams {Token = GetToken(response.ResponseData)};
 
             var customHeaders = new Dictionary<string, string>();
             
@@ -49,8 +44,7 @@ namespace SkypeDotnet
             customHeaders["Authentication"] = "skypetoken=" + authParams.Token;
 
             response =
-                httpClient.SendPost(new Uri("https://" + Constants.SkypewebMessagesHost + "/v1/users/ME/endpoints"),
-                    new JObject(), customHeaders);
+                httpClient.SendPost(SkypeApiUrls.EndpointsUrl,new JObject(), customHeaders);
 
             if (response.ResponseHeaders.ContainsKey("Set-RegistrationToken"))
             {
@@ -80,22 +74,22 @@ namespace SkypeDotnet
             var resultString =
                 "os=Windows; osVer=8.1; proc=Win32; lcid=en-us; deviceType=1; country=n/a; clientName={0}; clientVer={1}";
 
-            return string.Format(resultString, Constants.SkypewebClientinfoName, Constants.SkypewebClientinfoVersion);
+            return string.Format(resultString, SkypeConstants.SkypewebClientinfoName, SkypeConstants.SkypewebClientinfoVersion);
         }
 
         private string GetLockAndKey()
         {
 
             var currentTime = ((int) DateTime.Now.ToUnixTimestapm()).ToString();
-            var hash = chipher.Encrypt(currentTime, Constants.SkypewebLockandkeyAppid,
-                Constants.SkypewebLockandkeySecret);
+            var hash = chipher.Encrypt(currentTime, SkypeConstants.SkypewebLockandkeyAppid,
+                SkypeConstants.SkypewebLockandkeySecret);
 
             //appId=" SKYPEWEB_LOCKANDKEY_APPID "; time=%s; lockAndKeyResponse=%s\r\n"
             var resultString = "appId={0}; time={1}; lockAndKeyResponse={2}";
 
 
 
-            return string.Format(resultString, Constants.SkypewebLockandkeyAppid, currentTime, hash);
+            return string.Format(resultString, SkypeConstants.SkypewebLockandkeyAppid, currentTime, hash);
         }
 
         private string GetToken(string responseData)
