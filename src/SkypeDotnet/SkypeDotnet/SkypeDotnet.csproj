@@ -60,6 +60,7 @@
     <Compile Include="SkypeLoginManager.cs" />
     <Compile Include="Utils\DateTimeExtentions.cs" />
     <Compile Include="Utils\WebHeaderCollectionExtentions.cs" />
+    <Compile Include="Utils\WebRequestExtentions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

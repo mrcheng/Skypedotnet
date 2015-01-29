@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Web.Management;
 using System.Web.UI.WebControls;
@@ -51,8 +52,26 @@ namespace SkypeDotnet
                 httpClient.SendPost(new Uri("https://" + Constants.SkypewebMessagesHost + "/v1/users/ME/endpoints"),
                     new JObject(), customHeaders);
 
-            throw new NotImplementedException();
+            if (response.ResponseHeaders.ContainsKey("Set-RegistrationToken"))
+            {
+                authParams.RegistrationToken = ParseRegistrationToken(response.ResponseHeaders["Set-RegistrationToken"]);
+                authParams.EndpointId = ParseEndpointId(response.ResponseHeaders["Set-RegistrationToken"]);
+            }
 
+            return authParams;
+        }
+
+        private Guid ParseEndpointId(string responseHeader)
+        {
+            var headerVars = responseHeader.Split(';');
+            var endpointVar = headerVars.First(item => item.Trim().StartsWith("endpointId"));
+            return Guid.Parse(endpointVar.Split('=')[1]);
+        }
+
+        private string ParseRegistrationToken(string responseHeader)
+        {
+            var headerVars = responseHeader.Split(';');
+            return headerVars.First(item => item.StartsWith("registrationToken"));
         }
 
         private string GetClientInfo()

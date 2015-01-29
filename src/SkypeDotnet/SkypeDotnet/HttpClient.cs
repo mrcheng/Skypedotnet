@@ -26,7 +26,7 @@ namespace SkypeDotnet
         public HttpResponseInfo SendGet(Uri url, Dictionary<string, string> customHeaders = null)
         {
             var request = InitRequest(url, customHeaders);
-            return InitResponse((HttpWebResponse)request.GetResponse(), customHeaders);
+            return InitResponse((HttpWebResponse)request.GetResponse(), null, null, customHeaders:customHeaders);
         }
 
         public HttpResponseInfo SendPost(Uri url, Dictionary<string, string> postParameters, Dictionary<string, string> customHeaders = null )
@@ -42,14 +42,8 @@ namespace SkypeDotnet
         public HttpResponseInfo SendPost(Uri url, string postData, string contentTypeHeader, Dictionary<string, string> customHeaders = null )
         {
             var request = InitRequest(url, customHeaders);
-            request.Method = "POST";
-            request.ContentType = contentTypeHeader;
-            var postBytes = Encoding.Default.GetBytes(postData);
-            request.ContentLength = postBytes.Length;
-            var stream = request.GetRequestStream();
-            stream.Write(postBytes, 0, postBytes.Length);
-            stream.Close();
-            return InitResponse((HttpWebResponse)request.GetResponse(), customHeaders);
+            SetupPostRequest(request, postData, contentTypeHeader);
+            return InitResponse((HttpWebResponse)request.GetResponse(), postData, contentTypeHeader, customHeaders);
 
         }
 
@@ -67,14 +61,18 @@ namespace SkypeDotnet
             return postData;
         }
 
-        private HttpResponseInfo InitResponse(HttpWebResponse response, Dictionary<string,string> customHeaders = null)
+        private HttpResponseInfo InitResponse(HttpWebResponse response,string postData, string contentTypeHeader, Dictionary<string,string> customHeaders = null)
         {
             HttpWebRequest request;
             while (response.StatusCode == HttpStatusCode.Found || response.StatusCode == HttpStatusCode.MovedPermanently)
             {
                 response.Close();
                 request = InitRequest(new Uri(response.Headers["Location"]), customHeaders);
-                response = (HttpWebResponse)request.GetResponse();
+                if (!string.IsNullOrEmpty(postData))
+                {
+                    SetupPostRequest(request, postData, contentTypeHeader);
+                }
+                response = (HttpWebResponse)request.GetResponseNoThrow();
             }
 
             var reader = new StreamReader(response.GetResponseStream());
@@ -88,6 +86,17 @@ namespace SkypeDotnet
                 ResponseUrl = response.ResponseUri,
                 ResponseHeaders = response.Headers.GetHeaders()
             };
+        }
+
+        private void SetupPostRequest(HttpWebRequest request, string postData, string contentTypeHeader)
+        {
+            request.Method = "POST";
+            request.ContentType = contentTypeHeader;
+            var postBytes = Encoding.Default.GetBytes(postData);
+            request.ContentLength = postBytes.Length;
+            var stream = request.GetRequestStream();
+            stream.Write(postBytes, 0, postBytes.Length);
+            stream.Close();
         }
 
         private HttpWebRequest InitRequest(Uri url, Dictionary<string, string> customHeaders = null)
