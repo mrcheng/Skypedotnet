@@ -51,7 +51,10 @@
     <Compile Include="Abstract\ISkypeHmacChipher.cs" />
     <Compile Include="Abstract\ISkypeLoginManager.cs" />
     <Compile Include="Model\SearchInfo.cs" />
+    <Compile Include="Model\SkypeAuthRequest.cs" />
+    <Compile Include="Model\SkypePoll.cs" />
     <Compile Include="Model\SkypeProfileBase.cs" />
+    <Compile Include="Model\SkypeFriend.cs" />
     <Compile Include="Model\SkypeSelfProfile.cs" />
     <Compile Include="SkypeApiUrls.cs" />
     <Compile Include="SkypeConstants.cs" />

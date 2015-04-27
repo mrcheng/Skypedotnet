@@ -49,6 +49,13 @@ namespace SkypeDotnet
 
         }
 
+        public HttpResponseInfo SendPut(Uri url, Dictionary<string, string> customHeaders = null)
+        {
+            var request = InitRequest(url, customHeaders);
+            request.Method = "PUT";
+            return InitResponse((HttpWebResponse)request.GetResponse(), null, null, customHeaders);
+        }
+
         public void UpdateSharedCustomHeader(string key, string value)
         {
             sharedCustomHeaders[key] = value;
@@ -82,7 +89,7 @@ namespace SkypeDotnet
                 response = (HttpWebResponse)request.GetResponseNoThrow();
             }
 
-            var reader = new StreamReader(response.GetResponseStream());
+            var reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8);
             var result = reader.ReadToEnd();
             reader.Dispose();
 
@@ -99,7 +106,7 @@ namespace SkypeDotnet
         {
             request.Method = "POST";
             request.ContentType = contentTypeHeader;
-            var postBytes = Encoding.Default.GetBytes(postData);
+            var postBytes = Encoding.UTF8.GetBytes(postData);
             request.ContentLength = postBytes.Length;
             var stream = request.GetRequestStream();
             stream.Write(postBytes, 0, postBytes.Length);

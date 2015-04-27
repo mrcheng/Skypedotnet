@@ -12,9 +12,17 @@ namespace SkypeDotnet
 
         public const string EndpointsPath = "/v1/users/ME/endpoints";
 
+        public const string SubscriptionsPath = "/v1/users/ME/endpoints/SELF/subscriptions";
+
+        public const string PollSubscriptionPath = "/v1/users/ME/endpoints/SELF/subscriptions/{0}/poll";
+
+        public const string ConversationMessagesPath = "/v1/users/ME/conversations/{0}/messages";
+
         public const string SearchPath = "/search/users/any";
 
         public const string AuthRequestsPath = "/users/self/contacts/auth-request";
+
+        public const string AcceptAuthRequestPath = "/users/self/contacts/auth-request/{0}/accept";
 
         public const string FriendProfilesPath = "/users/self/contacts/profiles";
 
@@ -43,9 +51,29 @@ namespace SkypeDotnet
 
         public static readonly Uri EndpointsUrl = UrlForMessagesHost(EndpointsPath);
 
+        public static readonly Uri SubscriptionsUrl = UrlForMessagesHost(SubscriptionsPath);
+
+        public static Uri PollSubscriptionUrl(int subscription)
+        {
+            string path = String.Format(PollSubscriptionPath, subscription);
+            return UrlForMessagesHost(path);
+        }
+
+        public static Uri ConversationMessagesUrl(string conversation)
+        {
+            string path = String.Format(ConversationMessagesPath, conversation);
+            return UrlForMessagesHost(path);
+        }
+
         public static readonly Uri SearchContactsUrl = UrlForContactsHost(SearchPath);
 
         public static readonly Uri AuthRequestsUrl = UrlForContactsHost(AuthRequestsPath);
+
+        public static Uri AcceptAuthRequestUrl(string skypeName)
+        {
+            string path = String.Format(AcceptAuthRequestPath, skypeName);
+            return UrlForContactsHost(path);
+        }
 
         public static readonly Uri DisplayNameUrl = UrlForContactsHost(DisplayNamePath);
 
