@@ -16,6 +16,7 @@ namespace SkypeDotnet
         private readonly IHttpClient httpClient;
         private readonly string requestToken;
         private readonly string registrationToken;
+        private readonly string messagesHost;
 
         public SkypeClient(IHttpClient httpClient, SkypeAuthParams authParams)
         {
@@ -23,6 +24,7 @@ namespace SkypeDotnet
             httpClient.UpdateSharedCustomHeader("X-Skypetoken", authParams.Token);
             this.requestToken = authParams.Token;
             this.registrationToken = authParams.RegistrationToken;
+            this.messagesHost = authParams.MessagesHost;
         }
 
         public SkypeSelfProfile GetSelfProfile()
@@ -52,7 +54,7 @@ namespace SkypeDotnet
 
         public int CreateSubscription()
         {
-            var response = httpClient.SendPost(SkypeApiUrls.SubscriptionsUrl,
+            var response = httpClient.SendPost(SkypeApiUrls.SubscriptionsUrl(messagesHost),
                 JObject.FromObject(new
                 {
                     channelType = "httpLongPoll",
@@ -75,7 +77,7 @@ namespace SkypeDotnet
 
         public SkypePoll PollSubscription(int subscription)
         {
-            var response = httpClient.SendPost(SkypeApiUrls.PollSubscriptionUrl(subscription),
+            var response = httpClient.SendPost(SkypeApiUrls.PollSubscriptionUrl(messagesHost, subscription),
                 "", "application/json",
                 new Dictionary<string, string>
                 {
@@ -90,7 +92,7 @@ namespace SkypeDotnet
 
         public void SendMessage(string conversation, string content)
         {
-            httpClient.SendPost(SkypeApiUrls.ConversationMessagesUrl(conversation),
+            httpClient.SendPost(SkypeApiUrls.ConversationMessagesUrl(messagesHost, conversation),
                 JObject.FromObject(new
                 {
                     clientmessageid = "",

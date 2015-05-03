@@ -50,6 +50,9 @@ namespace SkypeDotnet
             {
                 authParams.RegistrationToken = ParseRegistrationToken(response.ResponseHeaders["Set-RegistrationToken"]);
                 authParams.EndpointId = ParseEndpointId(response.ResponseHeaders["Set-RegistrationToken"]);
+                // the endpoint post may be redirected to another server, in which case we need to use that
+                // in subsequent requests
+                authParams.MessagesHost = response.ResponseUrl.Host;
             }
 
             return authParams;

@@ -51,18 +51,21 @@ namespace SkypeDotnet
 
         public static readonly Uri EndpointsUrl = UrlForMessagesHost(EndpointsPath);
 
-        public static readonly Uri SubscriptionsUrl = UrlForMessagesHost(SubscriptionsPath);
-
-        public static Uri PollSubscriptionUrl(int subscription)
+        public static Uri SubscriptionsUrl(string messagesHost)
         {
-            string path = String.Format(PollSubscriptionPath, subscription);
-            return UrlForMessagesHost(path);
+            return UrlForMessagesHost(messagesHost, SubscriptionsPath);
         }
 
-        public static Uri ConversationMessagesUrl(string conversation)
+        public static Uri PollSubscriptionUrl(string messagesHost, int subscription)
+        {
+            string path = String.Format(PollSubscriptionPath, subscription);
+            return UrlForMessagesHost(messagesHost, path);
+        }
+
+        public static Uri ConversationMessagesUrl(string messagesHost, string conversation)
         {
             string path = String.Format(ConversationMessagesPath, conversation);
-            return UrlForMessagesHost(path);
+            return UrlForMessagesHost(messagesHost, path);
         }
 
         public static readonly Uri SearchContactsUrl = UrlForContactsHost(SearchPath);
@@ -94,6 +97,11 @@ namespace SkypeDotnet
         private static Uri UrlForMessagesHost(string path)
         {
             return new Uri(Protocol + MessagesHost + path);
+        }
+
+        private static Uri UrlForMessagesHost(string messagesHost, string path)
+        {
+            return new Uri(Protocol + messagesHost + path);
         }
 
         private static Uri UrlForLoginHost(string path)
