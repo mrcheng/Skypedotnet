@@ -16,7 +16,7 @@ namespace SkypeDotnet
         public const string SkypewebLockandkeySecret = "Q1P7W2E4J9R8U3S5";       
         
         public const string SkypewebClientinfoName = "swx-skype.com";
-        
-        public const string SkypewebClientinfoVersion = "908/1.0.0.30";
+
+        public const string SkypewebClientinfoVersion = "908/1.1.765";
     }
 }
