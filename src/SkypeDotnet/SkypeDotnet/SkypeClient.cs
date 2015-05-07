@@ -17,6 +17,7 @@ namespace SkypeDotnet
         private readonly string requestToken;
         private readonly string registrationToken;
         private readonly string messagesHost;
+        private readonly Guid endpointId;
 
         public SkypeClient(IHttpClient httpClient, SkypeAuthParams authParams)
         {
@@ -25,6 +26,7 @@ namespace SkypeDotnet
             this.requestToken = authParams.Token;
             this.registrationToken = authParams.RegistrationToken;
             this.messagesHost = authParams.MessagesHost;
+            this.endpointId = authParams.EndpointId;
         }
 
         public SkypeSelfProfile GetSelfProfile()
@@ -99,6 +101,47 @@ namespace SkypeDotnet
                     content = content,
                     messagetype = "RichText",
                     contenttype = "text"
+                }),
+                new Dictionary<string, string>
+                {
+                    { "RegistrationToken", registrationToken }
+                });
+        }
+
+        public void SetEndpointPresence()
+        {
+            httpClient.SendPut(SkypeApiUrls.EndpointPresenceUrl(messagesHost, endpointId),
+                JObject.FromObject(new
+                {
+                    id = "messagingService",
+                    type = "EndpointPresenceDoc",
+                    selfLink = "uri",
+                    privateInfo = new
+                    {
+                        epname = "skype"
+                    },
+                    publicInfo = new
+                    {
+                        capabilities = "",
+                        type = 1,
+                        typ = 1,
+                        skypeNameVersion = SkypeConstants.SkypewebClientinfoVersion + "/" + SkypeConstants.SkypewebClientinfoName,
+                        nodeInfo = "xx",
+                        version = SkypeConstants.SkypewebClientinfoVersion
+                    }
+                }),
+                new Dictionary<string, string>
+                {
+                    { "RegistrationToken", registrationToken }
+                });
+        }
+
+        public void SetPresence(string status)
+        {
+            httpClient.SendPut(SkypeApiUrls.PresenceUrl(messagesHost),
+                JObject.FromObject(new
+                {
+                    status = status
                 }),
                 new Dictionary<string, string>
                 {

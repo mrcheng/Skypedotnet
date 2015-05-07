@@ -18,6 +18,10 @@ namespace SkypeDotnet
 
         public const string ConversationMessagesPath = "/v1/users/ME/conversations/{0}/messages";
 
+        public const string EndpointPresencePath = "/v1/users/ME/endpoints/{0}/presenceDocs/messagingService";
+
+        public const string PresencePath = "/v1/users/ME/presenceDocs/messagingService";
+
         public const string SearchPath = "/search/users/any";
 
         public const string AuthRequestsPath = "/users/self/contacts/auth-request";
@@ -65,6 +69,18 @@ namespace SkypeDotnet
         public static Uri ConversationMessagesUrl(string messagesHost, string conversation)
         {
             string path = String.Format(ConversationMessagesPath, conversation);
+            return UrlForMessagesHost(messagesHost, path);
+        }
+
+        public static Uri EndpointPresenceUrl(string messagesHost, Guid endpointId)
+        {
+            string path = String.Format(EndpointPresencePath, endpointId.ToString("B"));
+            return UrlForMessagesHost(messagesHost, path);
+        }
+
+        public static Uri PresenceUrl(string messagesHost)
+        {
+            string path = String.Format(PresencePath);
             return UrlForMessagesHost(messagesHost, path);
         }
 

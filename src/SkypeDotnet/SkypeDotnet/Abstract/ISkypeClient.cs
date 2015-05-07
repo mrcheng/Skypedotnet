@@ -20,5 +20,9 @@ namespace SkypeDotnet.Abstract
         SkypePoll PollSubscription(int subscription);
 
         void SendMessage(string conversation, string content);
+
+        void SetEndpointPresence();
+
+        void SetPresence(string status);
     }
 }

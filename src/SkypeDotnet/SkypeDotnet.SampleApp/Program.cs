@@ -24,6 +24,9 @@ namespace SkypeDotnet.SampleApp
 
             Abstract.ISkypeClient client = new SkypeClient(httpClient, token);
 
+            client.SetEndpointPresence();
+            client.SetPresence("Online");
+
             Console.WriteLine("Fetching friends list");
             var friends = client.GetFriends();
             foreach (var friend in friends)

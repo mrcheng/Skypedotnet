@@ -28,7 +28,7 @@ namespace SkypeDotnet
         public HttpResponseInfo SendGet(Uri url, Dictionary<string, string> customHeaders = null)
         {
             var request = InitRequest(url, customHeaders);
-            return InitResponse((HttpWebResponse)request.GetResponse(), null, null, customHeaders);
+            return InitResponse((HttpWebResponse)request.GetResponse(), null, null, null, customHeaders);
         }
 
         public HttpResponseInfo SendPost(Uri url, Dictionary<string, string> postParameters, Dictionary<string, string> customHeaders = null )
@@ -44,16 +44,28 @@ namespace SkypeDotnet
         public HttpResponseInfo SendPost(Uri url, string postData, string contentTypeHeader, Dictionary<string, string> customHeaders = null )
         {
             var request = InitRequest(url, customHeaders);
-            SetupPostRequest(request, postData, contentTypeHeader);
-            return InitResponse((HttpWebResponse)request.GetResponse(), postData, contentTypeHeader, customHeaders);
+            SetupPostRequest(request, "POST", postData, contentTypeHeader);
+            return InitResponse((HttpWebResponse)request.GetResponse(), "POST", postData, contentTypeHeader, customHeaders);
 
+        }
+
+        public HttpResponseInfo SendPut(Uri url, JObject json, Dictionary<string, string> customHeaders = null)
+        {
+            return SendPut(url, json.ToString(), "application/json", customHeaders);
+        }
+
+        public HttpResponseInfo SendPut(Uri url, string postData, string contentTypeHeader, Dictionary<string, string> customHeaders = null)
+        {
+            var request = InitRequest(url, customHeaders);
+            SetupPostRequest(request, "PUT", postData, contentTypeHeader);
+            return InitResponse((HttpWebResponse)request.GetResponse(), "PUT", postData, contentTypeHeader, customHeaders);
         }
 
         public HttpResponseInfo SendPut(Uri url, Dictionary<string, string> customHeaders = null)
         {
             var request = InitRequest(url, customHeaders);
             request.Method = "PUT";
-            return InitResponse((HttpWebResponse)request.GetResponse(), null, null, customHeaders);
+            return InitResponse((HttpWebResponse)request.GetResponse(), null, null, null, customHeaders);
         }
 
         public void UpdateSharedCustomHeader(string key, string value)
@@ -75,7 +87,7 @@ namespace SkypeDotnet
             return postData;
         }
 
-        private HttpResponseInfo InitResponse(HttpWebResponse response,string postData, string contentTypeHeader, Dictionary<string,string> customHeaders = null)
+        private HttpResponseInfo InitResponse(HttpWebResponse response, string method, string postData, string contentTypeHeader, Dictionary<string,string> customHeaders = null)
         {
             HttpWebRequest request;
             while (response.StatusCode == HttpStatusCode.Found || response.StatusCode == HttpStatusCode.MovedPermanently)
@@ -84,7 +96,7 @@ namespace SkypeDotnet
                 request = InitRequest(new Uri(response.Headers["Location"]), customHeaders);
                 if (!string.IsNullOrEmpty(postData))
                 {
-                    SetupPostRequest(request, postData, contentTypeHeader);
+                    SetupPostRequest(request, method, postData, contentTypeHeader);
                 }
                 response = (HttpWebResponse)request.GetResponseNoThrow();
             }
@@ -102,9 +114,9 @@ namespace SkypeDotnet
             };
         }
 
-        private void SetupPostRequest(HttpWebRequest request, string postData, string contentTypeHeader)
+        private void SetupPostRequest(HttpWebRequest request, string method, string postData, string contentTypeHeader)
         {
-            request.Method = "POST";
+            request.Method = method;
             request.ContentType = contentTypeHeader;
             var postBytes = Encoding.UTF8.GetBytes(postData);
             request.ContentLength = postBytes.Length;

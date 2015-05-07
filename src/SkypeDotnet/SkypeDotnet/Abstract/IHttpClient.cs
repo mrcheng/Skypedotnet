@@ -17,8 +17,12 @@ namespace SkypeDotnet.Abstract
 
         HttpResponseInfo SendPost(Uri url, string postData, string contentTypeHeader, Dictionary<string, string> customHeaders = null);
 
+        HttpResponseInfo SendPut(Uri url, JObject json, Dictionary<string, string> customHeaders = null);
+
+        HttpResponseInfo SendPut(Uri url, string postData, string contentTypeHeader, Dictionary<string, string> customHeaders = null);
+
         HttpResponseInfo SendPut(Uri url, Dictionary<string, string> customHeaders = null);
-        
+
         void UpdateSharedCustomHeader(string xSkypetoken, string token);
     }
 }
