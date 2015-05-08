@@ -54,6 +54,15 @@ namespace SkypeDotnet
             httpClient.SendPut(SkypeApiUrls.AcceptAuthRequestUrl(skypeName));
         }
 
+        public void GetConversations()
+        {
+            var response = httpClient.SendGet(SkypeApiUrls.ConversationsUrl(messagesHost),
+                new Dictionary<string, string>
+                {
+                    { "RegistrationToken", registrationToken }
+                });
+        }
+
         public int CreateSubscription()
         {
             var response = httpClient.SendPost(SkypeApiUrls.SubscriptionsUrl(messagesHost),
@@ -101,6 +110,20 @@ namespace SkypeDotnet
                     content = content,
                     messagetype = "RichText",
                     contenttype = "text"
+                }),
+                new Dictionary<string, string>
+                {
+                    { "RegistrationToken", registrationToken }
+                });
+        }
+
+        public void SetConsumptionHorizon(string conversation, string originalArrivalTime, string clientMessageId)
+        {
+            string consumptionhorizon = originalArrivalTime + ";" + 0 + ";" + clientMessageId;
+            httpClient.SendPut(SkypeApiUrls.ConversationConsumptionHorizonUrl(messagesHost, conversation),
+                JObject.FromObject(new
+                {
+                    consumptionhorizon = consumptionhorizon
                 }),
                 new Dictionary<string, string>
                 {

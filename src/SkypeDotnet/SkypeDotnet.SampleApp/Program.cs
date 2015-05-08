@@ -27,6 +27,8 @@ namespace SkypeDotnet.SampleApp
             client.SetEndpointPresence();
             client.SetPresence("Online");
 
+            client.GetConversations();
+
             Console.WriteLine("Fetching friends list");
             var friends = client.GetFriends();
             foreach (var friend in friends)

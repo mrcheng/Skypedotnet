@@ -16,7 +16,11 @@ namespace SkypeDotnet
 
         public const string PollSubscriptionPath = "/v1/users/ME/endpoints/SELF/subscriptions/{0}/poll";
 
+        public const string ConversationsPath = "/v1/users/ME/conversations";
+
         public const string ConversationMessagesPath = "/v1/users/ME/conversations/{0}/messages";
+
+        public const string ConversationConsumptionHorizonPath = "/v1/users/ME/conversations/{0}/properties?name=consumptionhorizon";
 
         public const string EndpointPresencePath = "/v1/users/ME/endpoints/{0}/presenceDocs/messagingService";
 
@@ -66,9 +70,22 @@ namespace SkypeDotnet
             return UrlForMessagesHost(messagesHost, path);
         }
 
+        public static Uri ConversationsUrl(string messagesHost)
+        {
+            string path = ConversationsPath +
+                "?startTime=0&pageSize=100&view=msnp24Equivalent&targetType=Thread";
+            return UrlForMessagesHost(messagesHost, path);
+        }
+
         public static Uri ConversationMessagesUrl(string messagesHost, string conversation)
         {
             string path = String.Format(ConversationMessagesPath, conversation);
+            return UrlForMessagesHost(messagesHost, path);
+        }
+
+        public static Uri ConversationConsumptionHorizonUrl(string messagesHost, string conversation)
+        {
+            string path = String.Format(ConversationConsumptionHorizonPath, conversation);
             return UrlForMessagesHost(messagesHost, path);
         }
 

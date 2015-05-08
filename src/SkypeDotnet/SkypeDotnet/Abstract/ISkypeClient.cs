@@ -15,11 +15,15 @@ namespace SkypeDotnet.Abstract
 
         void AcceptAuthRequest(string skypeName);
 
+        void GetConversations();
+
         int CreateSubscription();
 
         SkypePoll PollSubscription(int subscription);
 
         void SendMessage(string conversation, string content);
+
+        void SetConsumptionHorizon(string conversation, string originalArrivalTime, string clientMessageId);
 
         void SetEndpointPresence();
 
