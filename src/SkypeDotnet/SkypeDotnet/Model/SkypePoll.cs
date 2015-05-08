@@ -50,5 +50,9 @@ namespace SkypeDotnet.Model
         public string Content { get; set; }
 
         public DateTime ComposeTime { get; set; }
+
+        public string SkypeEditedId { get; set; }
+
+        public string SkypeEditOffset { get; set; }
     }
 }
